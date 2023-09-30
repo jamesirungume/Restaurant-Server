@@ -33,7 +33,7 @@ with app.app_context():
     
     # Generate fake data
     db.create_all()
-    Faker.seed(0)  # Seed for reproducibility
+    Faker.seed(0)  
 
     # Generate fake restaurants
     for _ in range(10):  # Adjust the number of restaurants you want to generate

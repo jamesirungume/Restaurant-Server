@@ -26,6 +26,13 @@ class Restaurant(db.Model, SerializerMixin):
         UniqueConstraint('name',name="unique_name_constraint"),
         CheckConstraint('LENGTH(name) <= 50',name="check_name_constraint")
     )
+    def serialize(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'address': self.address,
+            'pizzas': [pizza.pizza.serialize() for pizza in self.restaurant_pizzas]
+        }
 
 class RestaurantPizza(db.Model, SerializerMixin):
     __tablename__ = 'restaurant_pizzas'
@@ -41,7 +48,7 @@ class RestaurantPizza(db.Model, SerializerMixin):
     @validates('price')
     def validate_price(self, key, price):
         if not (1 < price < 30):
-            raise ValueError("price must be between 1 and 30")
+            raise ValueError("price must be between 1 and 30")a
         return price
 
 
@@ -54,3 +61,10 @@ class PizzaModel(db.Model, SerializerMixin):
     ingredients = db.Column(db.String)
 
     restaurant_pizzas = db.relationship('RestaurantPizza', backref='pizza', lazy='select')
+
+    def serialize(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'ingredients': self.ingredients
+        }

@@ -36,7 +36,7 @@ class RestaurantByIDResource(Resource):
             response_dict = {"error": "Restaurant not found"}
             response = make_response(jsonify(response_dict),404)
             return response
-        response = make_response(jsonify(restaurant.to_dict()),200)
+        response = make_response(jsonify(restaurant.serialize()),200)
         return response
     def delete(self,id):
         restaurant = Restaurant.query.filter(Restaurant.id == id).first()
@@ -71,4 +71,4 @@ class PizzaResource(Resource):
 api.add_resource(PizzaResource,'/pizza')
 
 if __name__ == '__main__':
-    app.run(port=5555, debug=True)
+    app.run(port=5000, debug=True)
